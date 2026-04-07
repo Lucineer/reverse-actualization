@@ -1,58 +1,43 @@
-# reverse-actualization
-Reverse Actualization — a methodology service for structured, backward reasoning. A template for the Cocapn Fleet.
+# Reverse Actualization ✨
 
----
+You start from the future you want and work backward to find the steps that cannot be skipped. This service takes your target end state and returns only the strictly required prior conditions. It provides no suggestions, advice, or optional tasks.
 
-## Why this exists
-Most planning tools project forward from the present, mapping multiple possible paths. This provides a different approach: you define the end state you intend to reach, and the service walks backward to identify the strictly required prior conditions. It returns a sequence of necessary steps, not suggestions.
+A public test instance is available. Send a POST request with JSON `{ "targetState": "your end state" }` to:
+`https://reverse-actualization.casey-digennaro.workers.dev`
+Fair use rate limits apply.
 
----
-
-## What it provides
-*   **A fork-first template.** You clone or fork the repository—you own your copy. No one can push breaking changes to your instance.
-*   **A single, editable function.** The core backward-reasoning logic is contained in one function in `src/index.js`. You modify it with your domain rules. There is no hidden logic.
-*   **A standalone HTTP endpoint.** It's a web service that returns JSON. Any agent or tool can call it.
-*   **Zero dependencies.** The entire service is one source file. It deploys in about a minute to Cloudflare's global network.
-
----
-
-## Current Limitation
-This is a structural template, not a complete reasoning engine. You must define the specific logic for how your end state decomposes into prior steps. The provided function is a minimal example.
-
----
+## Why This Exists
+Most planning tools build forward from the present, which can overwhelm you with possibilities. This tool is for when you need to know only the steps that will absolutely block your goal if they are missed.
 
 ## Quick Start
-1.  **Fork the repository.**
-2.  **Deploy with Wrangler:** Run `npx wrangler login` and `npx wrangler deploy`.
-3.  **Edit the function.** Modify the `deriveRequiredSteps` function in `src/index.js` with your own rules.
+1.  **Fork this repository.** This is a fork-first project; you must start with your own copy.
+2.  **Deploy:** Authenticate with `npx wrangler login` and deploy using `npx wrangler deploy`.
+3.  **Edit the logic:** Replace the placeholder `deriveRequiredSteps` function in `src/index.js` with your own backward-chaining rules.
 
-Your private instance will be live at your own Worker URL. The entire process takes about a minute.
+Your private instance will be live in about a minute.
 
-A public reference instance is available for testing:
-**`https://reverse-actualization.casey-digennaro.workers.dev`**
+## Architecture
+A single, zero-dependency Cloudflare Worker. All backward reasoning logic is contained in one plain JavaScript function that you edit directly. There are no frameworks or hidden abstraction layers.
 
-Send a `POST` request with a JSON body containing a `targetState`. It is rate-limited for fair use.
+## Features
+- **Backward reasoning pattern:** Returns only mandatory prerequisites.
+- **Minimal footprint:** Deployed size under 10KB. Typical cold start times under 50ms on Cloudflare's network.
+- **Fork-first independence:** Your instance is yours; upstream changes will not affect it.
+- **Fleet-native:** Callable by any Cocapn Fleet agent or tool via a standalone JSON endpoint.
+- **Transparent logic:** Every rule that executes is in the single function you edit.
 
----
+## What Makes This Different
+1.  It returns only what you *must* do, never what you *could* do.
+2.  You own the instance after forking—no sign-ups, accounts, or ongoing costs.
+3.  There is no black box. The entire logic is in the open function you control.
 
-## Key Features
-- **Backward-Reasoning Pattern:** Starts from a defined end state and surfaces required preceding conditions.
-- **Sub-10KB Deployment:** The deployed Worker script is minimal, with cold starts typically under 5ms.
-- **Fleet-Native:** Any agent on the Cocapn Fleet can call your instance without extra configuration.
-- **Necessity-Focused:** Designed to return required steps, not probabilistic forecasts or optional advice.
+## Limitation
+All your backward-chaining rules must be written into the single `deriveRequiredSteps` function. While this keeps the system simple, complex rule sets with many interdependent conditions can become difficult to organize and maintain in one place.
 
----
+## License
+MIT license. You are free to use, modify, and redistribute this code for any purpose.
 
-## Use It Your Way
-This template provides the HTTP structure and the backward-reasoning pattern. You supply the domain knowledge, context, and step definitions. Modify the core function to make it work for your specific use case.
+## Credits
+Original concept by Superinstance and Lucineer (DiGennaro et al.).
 
-## Contributing
-Open an issue to discuss potential changes. This project follows the Cocapn Fleet's fork-first contribution model.
-
----
-
-MIT © Superinstance & Lucineer (DiGennaro et al.).
-
-<div align="center">
-  <a href="https://the-fleet.casey-digennaro.workers.dev">The Fleet</a> · <a href="https://cocapn.ai">Cocapn</a>
-</div>
+<div style="text-align:center;padding:16px;color:#64748b;font-size:.8rem"><a href="https://the-fleet.casey-digennaro.workers.dev" style="color:#64748b">The Fleet</a> &middot; <a href="https://cocapn.ai" style="color:#64748b">Cocapn</a></div>
