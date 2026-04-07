@@ -1,52 +1,53 @@
 # reverse-actualization
-
-You don't build the future by guessing forward. You build it by reasoning backwards from the version that is already waiting.
+Reverse Actualization — a methodology service for structured, backward reasoning. A template for the Cocapn Fleet.
 
 ---
 
 ## Why this exists
-Most planning starts from your current position, carrying forward existing assumptions. This service provides a structured alternative: begin from a defined future state and work backwards to identify the necessary preceding steps.
+Most planning tools project forward from the present, mapping multiple possible paths. This provides a different approach: you define the end state you intend to reach, and the service walks backward to identify the strictly required prior conditions. It returns a sequence of necessary steps, not suggestions.
+
+---
+
+## What it provides
+*   **A fork-first template.** You clone or fork the repository—you own your copy. No one can push breaking changes to your instance.
+*   **A single, editable function.** The core backward-reasoning logic is contained in one function in `src/index.js`. You modify it with your domain rules. There is no hidden logic.
+*   **A standalone HTTP endpoint.** It's a web service that returns JSON. Any agent or tool can call it.
+*   **Zero dependencies.** The entire service is one source file. It deploys in about a minute to Cloudflare's global network.
+
+---
+
+## Current Limitation
+This is a structural template, not a complete reasoning engine. You must define the specific logic for how your end state decomposes into prior steps. The provided function is a minimal example.
 
 ---
 
 ## Quick Start
-1.  **Fork & Clone:** `gh repo fork Lucineer/reverse-actualization --clone`
-2.  **Navigate:** `cd reverse-actualization`
-3.  **Deploy:** `npx wrangler login && npx wrangler deploy`
+1.  **Fork the repository.**
+2.  **Deploy with Wrangler:** Run `npx wrangler login` and `npx wrangler deploy`.
+3.  **Edit the function.** Modify the `deriveRequiredSteps` function in `src/index.js` with your own rules.
 
-Your private instance will be live in about 90 seconds.
+Your private instance will be live at your own Worker URL. The entire process takes about a minute.
 
-## What this is
-A methodology service for the Cocapn Fleet, implemented as a zero-dependency Cloudflare Worker. It provides a programmable pattern for reverse-actualization logic that agents can call.
+A public reference instance is available for testing:
+**`https://reverse-actualization.casey-digennaro.workers.dev`**
 
-### Implementation
-*   **Single Function:** The core logic is a standalone function that processes a defined end state and returns a sequence of required prior steps.
-*   **Fleet-Compatible:** Designed to be called by agents on the Cocapn runtime. It also functions as a standalone HTTP endpoint.
-*   **No Dependencies:** One source file. Total deployed size is under 10KB.
-*   **Template, Not Library:** This is a codebase to fork and modify, not a package to install.
-*   **MIT Licensed:** Use it for any purpose.
-
-## What makes this different
-*   Output is a sequence of necessary prior conditions, not a probability-weighted forecast.
-*   The logic focuses on necessity, not optimization.
-*   It requires you to define a clear end state; it will not generate one for you.
-
-## Limitation
-The quality of the output path depends entirely on the clarity and specificity of the future state you provide. Vague goals produce vague steps.
+Send a `POST` request with a JSON body containing a `targetState`. It is rate-limited for fair use.
 
 ---
 
-## Try it
-Call the public reference instance:
-`https://the-fleet.casey-digennaro.workers.dev/actualize`
+## Key Features
+- **Backward-Reasoning Pattern:** Starts from a defined end state and surfaces required preceding conditions.
+- **Sub-10KB Deployment:** The deployed Worker script is minimal, with cold starts typically under 5ms.
+- **Fleet-Native:** Any agent on the Cocapn Fleet can call your instance without extra configuration.
+- **Necessity-Focused:** Designed to return required steps, not probabilistic forecasts or optional advice.
 
-Send a POST request with a JSON body describing a future state. It will return a backwards path.
+---
 
-## Extend It
-The service provides the structural pattern. You supply the context, domain knowledge, and integration with your data sources or agent workflows by modifying the core function.
+## Use It Your Way
+This template provides the HTTP structure and the backward-reasoning pattern. You supply the domain knowledge, context, and step definitions. Modify the core function to make it work for your specific use case.
 
 ## Contributing
-Open an issue to discuss changes first. This project follows the Fleet's fork-first model.
+Open an issue to discuss potential changes. This project follows the Cocapn Fleet's fork-first contribution model.
 
 ---
 
